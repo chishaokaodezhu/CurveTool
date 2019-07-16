@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{81C082A0-4749-44C0-86A4-E12588EE59E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurveMonitor", "CurveMonitor\CurveMonitor.csproj", "{A811FF58-DE4F-4A32-8074-2D61785946FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{81C082A0-4749-44C0-86A4-E12588EE59E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C082A0-4749-44C0-86A4-E12588EE59E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81C082A0-4749-44C0-86A4-E12588EE59E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A811FF58-DE4F-4A32-8074-2D61785946FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A811FF58-DE4F-4A32-8074-2D61785946FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A811FF58-DE4F-4A32-8074-2D61785946FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A811FF58-DE4F-4A32-8074-2D61785946FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
