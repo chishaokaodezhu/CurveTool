@@ -58,6 +58,10 @@
     <Compile Include="src\DataPump\BinDataDeliver.cs" />
     <Compile Include="src\DataPump\DataPump.cs" />
     <Compile Include="src\DataPump\FormulaComplier.cs" />
+    <Compile Include="src\Graph\CurveView.cs" />
+    <Compile Include="src\Graph\CurveWindow.xaml.cs">
+      <DependentUpon>CurveWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="src\Plugin\DataProvider.cs" />
     <Compile Include="src\Plugin\PluginLoader.cs" />
     <Page Include="MainWindow.xaml">
@@ -72,6 +76,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="src\Graph\CurveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -100,7 +108,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\Graph\" />
     <Folder Include="src\Session\" />
   </ItemGroup>
   <ItemGroup>
