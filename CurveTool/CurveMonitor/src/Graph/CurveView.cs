@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -32,24 +33,46 @@ namespace CurveMonitor.src.Graph
         private List<Visual> visuals = new List<Visual>();
         private DrawingVisual presentVisual = null;
 
-        private Object[] curvesData = new object[MAX_CURVE_NUMS];
+        /*
+         * curvesData中存储着Double类型的数组，该数组用于存储曲线数据，同时该数组也会与
+         * curvesDataBuf中的并发队列一同组成一个带缓存的环线队列。外部交付数据时数据被存
+         * 放在curvesDataBuf中，内部更新curvesData中的环形队列时才从并发队列中取出数据。
+         */
+        private List<ConcurrentQueue<double>> curvesDataBuf = new List<ConcurrentQueue<double>>();
+        private Object[] curvesData = new Object[MAX_CURVE_NUMS];
         private int[] curvesDataStrartIdx = new int[MAX_CURVE_NUMS];
-        private SpinLock[] curvesLock = new SpinLock[MAX_CURVE_NUMS];
+        private int[] curvesDataNums = new int[MAX_CURVE_NUMS];
+        private int maxCurvesDataNums = MAX_CURVE_LENGTH;
+        
 
         public void AppendData(double[] data)
         {
             int lineIdx = 0;
             for(lineIdx = 0; lineIdx < curvesData.Length && lineIdx < data.Length; lineIdx++)
             {
-                
+                curvesDataBuf[lineIdx].Enqueue(data[lineIdx]);
             }
 
             /* 程序支持动态增加绘制的曲线 */
             for(;lineIdx < data.Length && lineIdx < MAX_CURVE_NUMS; lineIdx++)
             {
-                ConcurrentQueue<Double> q = new ConcurrentQueue<double>();
+                ConcurrentQueue<double> q = new ConcurrentQueue<double>();
                 q.Enqueue(data[lineIdx]);
-                curveData.Add(q);
+                curvesData[lineIdx] = new double[maxCurvesDataNums];
+                curvesDataStrartIdx[lineIdx] = 0;
+                curvesDataNums[lineIdx] = 0;
+
+                curvesXScale[lineIdx] = 1.0f;
+                curvesYScale[lineIdx] = 1.0f;
+                curvesYOffset[lineIdx] = 0.0f;
+                curvesStartX[lineIdx] = 0.0f;
+
+                byte r = (byte)(255 -  lineIdx * 16 + 1);
+                byte g = (byte)(lineIdx * 16 - 1);
+                byte b = (byte)(255 - r);
+                curvesColor[lineIdx] = Color.FromArgb(100, r, g, b);
+
+                curvesDataBuf.Add(q);
             }
         }
 
@@ -85,83 +108,138 @@ namespace CurveMonitor.src.Graph
 
         private float systemYScale = 0.0f;
         private float maxVisablePointNums = MAX_CURVE_LENGTH;
-        private float[] curvesYScale = null;
-        private float[] curvesXScale = null;
-        private double[] curvesYOffset = null;
-        private float[] curvesStartX = null;
-        private Color[] curvesColor = null;
-
-        public void CurveViewInit()
-        {
-            curvesYScale = new float[MAX_CURVE_NUMS];
-            curvesXScale = new float[MAX_CURVE_NUMS];
-            curvesYOffset = new Double[MAX_CURVE_NUMS];
-            curvesStartX = new float[MAX_CURVE_NUMS];
-            curvesColor  = new Color[MAX_CURVE_NUMS]; 
-
-            for(int i = 0; i < MAX_CURVE_NUMS; i++)
-            {
-                curvesXScale[i] = 1.0f;
-                curvesYScale[i] = 1.0f;
-                curvesYOffset[i] = 0.0f;
-                curvesStartX[i] = 0.0f;
-            }
-
-            curvesColor[00] = Color.FromArgb(100, 0,   0,   0  );
-            curvesColor[01] = Color.FromArgb(100, 255, 0,   0  );
-            curvesColor[02] = Color.FromArgb(100, 0,   255, 0  );
-            curvesColor[03] = Color.FromArgb(100, 0,   0,   255);
-            curvesColor[04] = Color.FromArgb(100, 255, 255, 0  );
-            curvesColor[05] = Color.FromArgb(100, 0,   255, 255);
-            curvesColor[06] = Color.FromArgb(100, 255, 0,   255);
-            curvesColor[07] = Color.FromArgb(100, 128, 128, 128);
-            curvesColor[08] = Color.FromArgb(100, 128, 0,   0  );
-            curvesColor[09] = Color.FromArgb(100, 0,   128, 0  );
-            curvesColor[10] = Color.FromArgb(100, 0,   0,   128);
-            curvesColor[11] = Color.FromArgb(100, 128, 128, 0  );
-            curvesColor[12] = Color.FromArgb(100, 0,   128, 128);
-            curvesColor[13] = Color.FromArgb(100, 128, 0,   128);
-            curvesColor[14] = Color.FromArgb(100, 200, 200, 0  );
-            curvesColor[15] = Color.FromArgb(100, 200, 128, 255);
-
-        }
+        private float[] curvesYScale = new float[MAX_CURVE_NUMS];
+        private float[] curvesXScale = new float[MAX_CURVE_NUMS];
+        private double[] curvesYOffset = new double[MAX_CURVE_NUMS];
+        private float[] curvesStartX = new float[MAX_CURVE_NUMS];
+        private Color[] curvesColor = new Color[MAX_CURVE_NUMS];
 
         public void DrawPolyLine()
         {
             /*
              * 确定绘制参数
              */
-
+             
             int maxCurveLength = 0;
-            double maxYValue = 0;
-            double minYValue = 0;
-            double[] points = null;
+            double maxYValue = Double.MinValue;
+            double minYValue = Double.MaxValue;
 
-            for(int i = 0; i < curveData.Count(); i++)
+            //遍历时以环形队列的缓存数量作为遍历次数，因为动态增加曲线时，其是最后更新的量
+            for(int curveIdx = 0; curveIdx < curvesDataBuf.Count(); curveIdx++)
             {
-                int curveLen = curveData[i].Count();
-                if (curveLen > maxCurveLength)
+                int curveLength = this.curvesDataNums[curveIdx];
+
+                if(curveLength > maxCurveLength)
                 {
-                    maxCurveLength = curveLen;
+                    maxCurveLength = curveLength;
                 }
 
-                if(points == null || points.Length < maxCurveLength)
+                if(systemYScale != 0.0f)
                 {
-                    points = new double[maxCurveLength];
+                    continue;
                 }
+
+                double[] points = (double[])this.curvesData[curveIdx];
+                for(int pointIdx = 0; pointIdx < curveLength; pointIdx++)
+                {
+                    double pointV = points[pointIdx];
+                    if (pointV > maxYValue)
+                    {
+                        maxYValue = pointV;
+                    }
+
+                    if(pointV < minYValue)
+                    {
+                        minYValue = pointV;
+                    }
+                }
+
             }
+
+            float realSysYScal = systemYScale != 0.0f ? systemYScale : (float)(this.ActualHeight / (maxYValue - minYValue) * 0.8);
+            float realXStep = (float)this.ActualWidth / this.maxVisablePointNums;
 
             /*
              * 曲线绘制
              */
 
+            if(this.presentVisual != null)
+            {
+                this.RemoveVisual(presentVisual);
+            }
+            this.presentVisual = new DrawingVisual();
+            DrawingContext dc = this.presentVisual.RenderOpen();
 
-            /*
-             * 绘制结果交付
-             */
+            for(int curveIdx = 0; curveIdx < curvesDataBuf.Count(); curveIdx++)
+            {
+                double lastPx = 0;
+                int curveLength = this.curvesDataNums[curveIdx];
+                if(curveLength < this.maxVisablePointNums)
+                {
+                    lastPx = (this.maxVisablePointNums - curveLength) * realXStep;
+                }
+
+                //
+                Pen curvePen = new Pen(new SolidColorBrush(this.curvesColor[curveIdx]), 1);
+                curvePen.Freeze();
+
+                //确定具体绘制参数
+                int pointIdx = this.curvesDataStrartIdx[curveIdx];
+                double[] points = (double[])this.curvesData[curveIdx];
+                float yScale = this.curvesYScale[curveIdx];
+                double yOffset = this.curvesYOffset[curveIdx];
+                double lastPy = points[pointIdx] * yScale * realSysYScal + yOffset;
+
+                for (int loopTimes = 0; loopTimes < this.curvesDataNums[curveIdx]; loopTimes++)
+                {
+                    double px = lastPx + realXStep;
+                    double py = points[pointIdx] * yScale* realSysYScal +yOffset;
+                    pointIdx++;
+                    pointIdx %= this.maxCurvesDataNums;
+
+                    //daraw
+                    Point p1 = new Point(lastPx, lastPy);
+                    Point p2 = new Point(px, py);
+                    dc.DrawLine(curvePen, p1, p2);
+
+                    lastPx = px;
+                    lastPy = py;
+                }
+
+            }
+            dc.Close();
+
+
+            //结果交付
+            this.AddVisual(this.presentVisual);
+
+            //数据更新
+            DataUpdate();
         }
 
+        /* 此过程必须在曲线绘制完成后被调用，且在一个线程内调用 */
+        private void DataUpdate()
+        {
+            for(int curveIdx = 0; curveIdx < this.curvesDataBuf.Count(); curveIdx++)
+            {
+                double newData = 0.0f;
+                while (this.curvesDataBuf[curveIdx].TryDequeue(out newData))
+                {
+                    int iPos = this.curvesDataStrartIdx[curveIdx] + this.curvesDataNums[curveIdx];
+                    iPos %= this.maxCurvesDataNums;
+                    double[] data = (double[])this.curvesData[curveIdx];
+                    data[iPos] = newData;
 
+                    this.curvesDataStrartIdx[curveIdx] += 1;
+                    this.curvesDataStrartIdx[curveIdx] %= this.maxCurvesDataNums;
+                    this.curvesDataNums[curveIdx] += 1;
+                    if(this.curvesDataNums[curveIdx] > this.maxCurvesDataNums)
+                    {
+                        this.curvesDataNums[curveIdx] = this.maxCurvesDataNums;
+                    }
+                }
+            }
+        }
 
         protected override int VisualChildrenCount
         {
