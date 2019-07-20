@@ -5,8 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurveMonitor.src.Graph"
         mc:Ignorable="d"
-        Title="CurveWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="CurveWindow" Width="1021" Height="585" MinWidth="800" MinHeight="600">
+    <Grid Margin="0,0,-8,-4" MinWidth="800" MinHeight="500">
+        <local:CurveView x:Name="curveView" Margin="65,30,10,10" MinWidth="700" MinHeight="500">
+        </local:CurveView>
+        <Rectangle x:Name="cbt1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,60,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt3" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,150,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt6" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,180,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt7" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt8" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,240,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt9" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,270,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt10" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,300,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt11" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,330,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt12" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,360,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt13" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,390,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt14" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,420,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt15" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,450,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Rectangle x:Name="cbt16" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="10,480,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <Label Content="Y缩放" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top"/>
+        <Label Content="Y偏移" HorizontalAlignment="Left" Margin="180,0,0,0" VerticalAlignment="Top"/>
+        <Label Content="X缩放" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,0,0,0"/>
+        <Border BorderBrush="Black" BorderThickness="2" Margin="65,30,10,10"/>
+        <TextBox x:Name="y_scale_txt" HorizontalAlignment="Left" Height="17" Margin="100,5,0,0" TextWrapping="Wrap" Text="1.0" VerticalAlignment="Top" Width="50"/>
+        <TextBox x:Name="y_offset_txt" HorizontalAlignment="Left" Height="17" Margin="220,5,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50"/>
+        <TextBox x:Name="x_scale_txt" HorizontalAlignment="Left" Height="17" Margin="340,5,0,0" TextWrapping="Wrap" Text="1.0" VerticalAlignment="Top" Width="50"/>
+        <Button x:Name="UpdateBtn" Content="更新" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Width="50" Click="UpdateBtn_Click"/>
     </Grid>
 </Window>

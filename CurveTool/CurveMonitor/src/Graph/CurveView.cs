@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace CurveMonitor.src.Graph
 {
@@ -23,7 +24,7 @@ namespace CurveMonitor.src.Graph
          * 不利于数据观察，因此该数值不宜过大，也因此在数据类型选型时选择了Double，而不
          * 是float。
          */
-        private const int MAX_CURVE_NUMS = 16;
+        public const int MAX_CURVE_NUMS = 16;
         private const int MAX_CURVE_LENGTH = 1024;
 
         /*
@@ -48,7 +49,7 @@ namespace CurveMonitor.src.Graph
         public void AppendData(double[] data)
         {
             int lineIdx = 0;
-            for(lineIdx = 0; lineIdx < curvesData.Length && lineIdx < data.Length; lineIdx++)
+            for(lineIdx = 0; lineIdx < curvesDataBuf.Count() && lineIdx < data.Length; lineIdx++)
             {
                 curvesDataBuf[lineIdx].Enqueue(data[lineIdx]);
             }
@@ -65,7 +66,9 @@ namespace CurveMonitor.src.Graph
                 curvesXScale[lineIdx] = 1.0f;
                 curvesYScale[lineIdx] = 1.0f;
                 curvesYOffset[lineIdx] = 0.0f;
+                curvesXOffset[lineIdx] = 0.0f;
                 curvesStartX[lineIdx] = 0.0f;
+                curvesVisable[lineIdx] = true;
 
                 byte r = (byte)(255 -  lineIdx * 16 + 1);
                 byte g = (byte)(lineIdx * 16 - 1);
@@ -76,8 +79,27 @@ namespace CurveMonitor.src.Graph
             }
         }
 
+        public void SetCurveColor(int idx, Color c)
+        {
+            curvesColor[idx] = c;
+        }
 
+        public void SetCurveVisable(int idx, bool visable)
+        {
+            curvesVisable[idx] = visable;
+        }
 
+        public void SetCurveScale(int idx, float y_scale, float x_scale)
+        {
+            curvesYScale[idx] = y_scale;
+            curvesXScale[idx] = x_scale;
+        }
+
+        public void SetCurveOffset(int idx, double y_offset, double x_offset)
+        {
+            curvesYOffset[idx] = y_offset;
+            curvesXOffset[idx] = x_offset;
+        }
 
         /*
          * 曲线绘制函数实现，当前仅包含折线图实现，即DrawPolyLine()
@@ -111,8 +133,10 @@ namespace CurveMonitor.src.Graph
         private float[] curvesYScale = new float[MAX_CURVE_NUMS];
         private float[] curvesXScale = new float[MAX_CURVE_NUMS];
         private double[] curvesYOffset = new double[MAX_CURVE_NUMS];
+        private double[] curvesXOffset = new double[MAX_CURVE_NUMS];
         private float[] curvesStartX = new float[MAX_CURVE_NUMS];
         private Color[] curvesColor = new Color[MAX_CURVE_NUMS];
+        private bool[] curvesVisable = new bool[MAX_CURVE_NUMS];
 
         public void DrawPolyLine()
         {
@@ -158,6 +182,7 @@ namespace CurveMonitor.src.Graph
 
             float realSysYScal = systemYScale != 0.0f ? systemYScale : (float)(this.ActualHeight / (maxYValue - minYValue) * 0.8);
             float realXStep = (float)this.ActualWidth / this.maxVisablePointNums;
+            float realSysYOffset = (float)this.ActualHeight / 2;
 
             /*
              * 曲线绘制
@@ -172,6 +197,11 @@ namespace CurveMonitor.src.Graph
 
             for(int curveIdx = 0; curveIdx < curvesDataBuf.Count(); curveIdx++)
             {
+                if (!curvesVisable[curveIdx])
+                {
+                    continue;
+                }
+
                 double lastPx = 0;
                 int curveLength = this.curvesDataNums[curveIdx];
                 if(curveLength < this.maxVisablePointNums)
@@ -187,13 +217,13 @@ namespace CurveMonitor.src.Graph
                 int pointIdx = this.curvesDataStrartIdx[curveIdx];
                 double[] points = (double[])this.curvesData[curveIdx];
                 float yScale = this.curvesYScale[curveIdx];
-                double yOffset = this.curvesYOffset[curveIdx];
+                double yOffset = this.curvesYOffset[curveIdx] + realSysYOffset;
                 double lastPy = points[pointIdx] * yScale * realSysYScal + yOffset;
 
                 for (int loopTimes = 0; loopTimes < this.curvesDataNums[curveIdx]; loopTimes++)
                 {
                     double px = lastPx + realXStep;
-                    double py = points[pointIdx] * yScale* realSysYScal +yOffset;
+                    double py = points[pointIdx] * yScale* realSysYScal + yOffset;
                     pointIdx++;
                     pointIdx %= this.maxCurvesDataNums;
 
@@ -230,8 +260,11 @@ namespace CurveMonitor.src.Graph
                     double[] data = (double[])this.curvesData[curveIdx];
                     data[iPos] = newData;
 
-                    this.curvesDataStrartIdx[curveIdx] += 1;
-                    this.curvesDataStrartIdx[curveIdx] %= this.maxCurvesDataNums;
+                    if(this.curvesDataNums[curveIdx] == this.maxCurvesDataNums)
+                    {
+                        this.curvesDataStrartIdx[curveIdx] += 1;
+                        this.curvesDataStrartIdx[curveIdx] %= this.maxCurvesDataNums;
+                    }
                     this.curvesDataNums[curveIdx] += 1;
                     if(this.curvesDataNums[curveIdx] > this.maxCurvesDataNums)
                     {
