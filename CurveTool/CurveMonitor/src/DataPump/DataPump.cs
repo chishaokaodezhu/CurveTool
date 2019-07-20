@@ -4,6 +4,7 @@
  * 设计。
  */
 using CurveMonitor.src.Plugin;
+using PluginPort;
 using System;
 using System.Collections.Generic;
 using System.Linq;

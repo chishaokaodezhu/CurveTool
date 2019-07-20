@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SerialPortPlugin
+namespace PluginPort
 {
-    interface DataProvider
+    public interface DataProvider
     {
         /*每个插件具备一个名字，这个名字将作为插件名显示在菜单栏中*/
         string PluginName();
