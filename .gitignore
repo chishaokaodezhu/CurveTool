@@ -1,4 +1,10 @@
 
+CurveTool/CurveMonitor/bin
+CurveTool/CurveMonitor/obj
+CurveTool/PluginPort/bin
+CurveTool/PluginPort/obj
+CurveTool/SerialPortPlugin/bin
+CurveTool/SerialPortPlugin/obj
 CurveTool/CurveMonitor/bin/Debug/CurveMonitor.exe
 CurveTool/CurveMonitor/bin/Debug/CurveMonitor.exe.config
 CurveTool/.vs/CurveTool/v16/Server/sqlite3/db.lock
@@ -47,3 +53,25 @@ CurveTool/Test/obj/Debug/Test.csprojAssemblyReference.cache
 CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
 CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
 CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.exe
+CurveTool/Test/obj/Debug/Test.csprojAssemblyReference.cache
+CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
+CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
+CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.exe
+CurveTool/Test/obj/Debug/Test.csprojAssemblyReference.cache
+CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
+CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
+CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
+CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
+CurveTool/Test/obj/Debug/Test.csprojAssemblyReference.cache
+CurveTool/Test/obj/Debug/Test.exe
+CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.csproj.CoreCompileInputs.cache
+CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
+CurveTool/Test/obj/Debug/Test.csprojAssemblyReference.cache
+CurveTool/Test/obj/Debug/Test.exe
+CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.pdb
+CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
