@@ -1,7 +1,0 @@
-F:\Project\RocketChip\CurveTool\CurveTool\Test\bin\Debug\Test.exe.config
-F:\Project\RocketChip\CurveTool\CurveTool\Test\bin\Debug\Test.exe
-F:\Project\RocketChip\CurveTool\CurveTool\Test\bin\Debug\Test.pdb
-F:\Project\RocketChip\CurveTool\CurveTool\Test\obj\Debug\Test.csprojAssemblyReference.cache
-F:\Project\RocketChip\CurveTool\CurveTool\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
-F:\Project\RocketChip\CurveTool\CurveTool\Test\obj\Debug\Test.exe
-F:\Project\RocketChip\CurveTool\CurveTool\Test\obj\Debug\Test.pdb
