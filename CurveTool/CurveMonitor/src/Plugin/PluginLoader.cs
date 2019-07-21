@@ -18,6 +18,18 @@ namespace CurveMonitor.src.Plugin
         List<string> pluginNames = new List<string>();
         Hashtable pluginTbl = new Hashtable();
 
+        private PluginLoader()
+        {
+
+        }
+
+        private static PluginLoader pl = new PluginLoader();
+
+        public static PluginLoader Instance()
+        {
+            return pl;
+        }
+
         public void LoadPlugins()
         {
             string pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -36,6 +48,7 @@ namespace CurveMonitor.src.Plugin
                         {
                             string name = dp1.PluginName();
                             pluginTbl.Add(name, type);
+                            pluginNames.Add(name);
                         }
                     }
                 }
@@ -46,6 +59,11 @@ namespace CurveMonitor.src.Plugin
         {
             Type t = (Type)pluginTbl[name];
             return (DataProvider)Activator.CreateInstance(t);
+        }
+
+        public string[] PluginNames()
+        {
+            return this.pluginNames.ToArray();
         }
     }
 }
