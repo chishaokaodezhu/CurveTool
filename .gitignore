@@ -75,3 +75,9 @@ CurveTool/Test/obj/Debug/Test.exe
 CurveTool/Test/obj/Debug/Test.pdb
 CurveTool/Test/obj/Debug/Test.pdb
 CurveTool/Test/obj/Debug/Test.csproj.FileListAbsolute.txt
+CurveTool/.vs/CurveTool/v16/.suo
+CurveTool/CurveMonitor/CurveMonitor.csproj.user
+CurveTool/lib/PluginPort.pdb
+CurveTool/plugin/PluginPort.pdb
+CurveTool/plugin/SerialPortPlugin.dll.config
+CurveTool/plugin/SerialPortPlugin.pdb
