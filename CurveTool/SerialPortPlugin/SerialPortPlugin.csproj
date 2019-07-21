@@ -53,8 +53,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PluginPort">
-      <HintPath>..\PluginPort\bin\Debug\PluginPort.dll</HintPath>
+    <Reference Include="PluginPort, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\PluginPort.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

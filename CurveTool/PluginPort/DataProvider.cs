@@ -13,6 +13,8 @@ namespace PluginPort
 
         int Open();
 
+        void Start();
+
         double[] LoadData();
 
         void Close();

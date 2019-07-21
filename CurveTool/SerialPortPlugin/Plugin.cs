@@ -33,8 +33,12 @@ namespace SerialPortPlugin
             }
 
             serialPort = new SerialPort(w.selectedPort, w.baudRate);
-            serialPort.Open();
             return 0;
+        }
+
+        public void Start()
+        {
+            serialPort.Open();
         }
 
         public double[] LoadData()
