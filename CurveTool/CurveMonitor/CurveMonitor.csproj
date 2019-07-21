@@ -69,6 +69,11 @@
       <DependentUpon>CurveWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="src\Plugin\PluginLoader.cs" />
+    <Compile Include="src\Session\Session.cs" />
+    <Compile Include="src\UI\PortPannel.xaml.cs">
+      <DependentUpon>PortPannel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\PortUIOp.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +87,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="src\Graph\CurveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="src\UI\PortPannel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -112,11 +121,31 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Session\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="src\说明.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\port_close.png" />
+    <Resource Include="src\UI\icons\port_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\channel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\channel1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="src\UI\icons\curve.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurveMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="610" Background="{x:Null}" MinWidth="610" MaxWidth="610">
     <Grid>
-        
+        <ListBox x:Name="pannelList" Margin="0,36,0,0"></ListBox>
+        <Menu Height="36" VerticalAlignment="Top">
+            <MenuItem x:Name="portMenuList" Header="打开端口" InputGestureText="Ctrl+O" Height="36" Width="72" FontSize="14">
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

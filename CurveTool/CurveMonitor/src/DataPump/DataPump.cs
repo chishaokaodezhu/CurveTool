@@ -16,7 +16,7 @@ namespace CurveMonitor.src.DataPump
 {
     using DataDeliver = BinDataDeliver;
 
-    class DataPump
+    public class DataPump
     {
         /*
          * dp       作为数据提供提供方

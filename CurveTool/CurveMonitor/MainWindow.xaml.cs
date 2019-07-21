@@ -16,6 +16,9 @@ using System.Windows.Shapes;
 using SerialPortPlugin;
 using CurveMonitor.src.Plugin;
 using PluginPort;
+using CurveMonitor.src.UI;
+using System.Collections;
+using CurveMonitor.src.Session;
 
 namespace CurveMonitor
 {
@@ -24,12 +27,13 @@ namespace CurveMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        CurveWindow cw = new CurveWindow();
+        
         public MainWindow()
         {
             InitializeComponent();
-            cw.Show();
+            LoadPluginToMenu();
 
+            /*
             PluginLoader pl = new PluginLoader();
             pl.LoadPlugins();
             DataProvider dp = pl.NewPluginInstance("通用串口");
@@ -39,17 +43,41 @@ namespace CurveMonitor
             {
                 string s = "y";
             }
+            
+            this.pannelList.Items.Add(new PortPannel());
+            this.pannelList.Items.Add(new PortPannel());
+            */
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        Hashtable pmHt = new Hashtable();
+        private void LoadPluginToMenu()
         {
-            for(double a = 0; a < 100; a++)
-            {
-                double[] data = {Math.Sin(a), Math.Sin(a+1) };
-                this.cw.DeliverData(data);
-            }
+            PluginLoader pl = PluginLoader.Instance();
+            pl.LoadPlugins();
 
-            this.cw.CurveUpdate();
+            string[] pluginNames = pl.PluginNames();
+            for (int i = 0; i < pluginNames.Length; i++)
+            {
+                MenuItem newItem = new MenuItem();
+                newItem.Header = pluginNames[i];
+                newItem.AddHandler(MenuItem.ClickEvent, new RoutedEventHandler(this.PortOpen));
+                pmHt.Add(newItem, pluginNames[i]);
+                this.portMenuList.Items.Add(newItem);
+            }
+        }
+
+        private void PortOpen(object sender, RoutedEventArgs e)
+        {
+            string portType = (string)pmHt[sender];
+            DataProvider dp = PluginLoader.Instance().NewPluginInstance(portType);
+            if (dp.Open() >= 0)
+            {
+                PortPannel pp = new PortPannel();
+                this.pannelList.Items.Add(pp);
+                Session session = new Session();
+                session.dataProvider = dp;
+                session.portPannel = pp;
+            }
         }
     }
 }

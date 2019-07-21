@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CurveMonitor.src.DataPump
 {
-    interface BinDataDeliver
+    public interface BinDataDeliver
     {
         int BinDataDeliver(float[] data);
     }
