@@ -166,5 +166,10 @@ namespace CurveMonitor.src.UI
             this.handler.CurveWindowCtrl(!this.isWinShow);
             this.isWinShow = !this.isWinShow;
         }
+
+        private void VChannel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.handler.OpenCodeEditor();
+        }
     }
 }

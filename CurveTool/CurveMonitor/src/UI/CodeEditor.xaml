@@ -7,10 +7,11 @@
         mc:Ignorable="d"
         Title="Virtual Channel Editor" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="fileList" HorizontalAlignment="Left" Width="100" BorderBrush="#FFA2A2A2" BorderThickness="0,0,4,0"/>
+        <ListBox x:Name="fileList" HorizontalAlignment="Left" Width="100" BorderBrush="#CCACACAC" Padding="0" ScrollViewer.CanContentScroll="False" Margin="0,30,0,0" SelectionChanged="ChannelChanged"/>
         <TextBox x:Name="fileName" HorizontalAlignment="Left" Height="24" Margin="104,3,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="320" UndoLimit="103" FontSize="16" BorderThickness="0"/>
         <Button x:Name="buildBtn" Content="预编译" HorizontalAlignment="Right" Height="24" Margin="0,2,96,0" VerticalAlignment="Top" Width="80" FontSize="14" IsEnabled="False"/>
-        <Button x:Name="addBtn" Content="添加" HorizontalAlignment="Right" Height="24" Margin="0,2,8,0" VerticalAlignment="Top" Width="80" FontSize="14" IsEnabled="False"/>
-        <TextBox x:Name="codeTextBox" Margin="100,30,0,0"></TextBox>
+        <Button x:Name="enableBtn" Content="启用" HorizontalAlignment="Right" Height="24" Margin="0,2,8,0" VerticalAlignment="Top" Width="80" FontSize="14" IsEnabled="False" Click="EnableBtnClick"/>
+        <TextBox x:Name="codeTextBox" Margin="100,30,0,0" AcceptsReturn="True"/>
+        <Button x:Name="addBtn" Content="添加" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="30" Background="#99E0E0E0" FontSize="14" Click="AddBtn_Click"/>
     </Grid>
 </Window>

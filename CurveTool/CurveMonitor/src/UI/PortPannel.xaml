@@ -16,7 +16,7 @@
                 <Image x:Name="storeSwitch" Height="24" Canvas.Left="193" Canvas.Top="5" Width="24" Source="icons/start.png" MouseLeftButtonDown="StoreSwitch_MouseLeftButtonDown"/>
                 <Image x:Name="showSwitch" Height="24" Canvas.Left="193" Canvas.Top="66" Width="24" Source="icons/start.png" MouseLeftButtonDown="ShowSwitch_MouseLeftButtonDown"/>
                 <Image x:Name="fileSelct" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="36" Source="icons/file.png" Canvas.Left="295" Canvas.Top="2" MouseLeftButtonDown="FileSelct_MouseLeftButtonDown"/>
-                <Image x:Name="vChannel" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="36" Source="icons/channel1.png" Canvas.Left="295" Canvas.Top="61"/>
+                <Image x:Name="vChannel" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="36" Source="icons/channel1.png" Canvas.Left="295" Canvas.Top="61" MouseLeftButtonDown="VChannel_MouseLeftButtonDown"/>
                 <Image x:Name="curveWindow" Height="40" Canvas.Left="446" Canvas.Top="60" Width="40" Source="icons/curve.png" MouseLeftButtonDown="CurveWindow_MouseLeftButtonDown"/>
                 <Rectangle Height="24" Canvas.Left="450" StrokeThickness="3" Width="140" Canvas.Top="1">
                     <Rectangle.Fill>

@@ -116,6 +116,12 @@ namespace CurveMonitor.src.Session
 
         }
 
+        public void OpenCodeEditor()
+        {
+            CodeEditor ce = new CodeEditor();
+            ce.ShowDialog();
+        }
+
         public void AddVirtualChannel(string name, Assembly assembly)
         {
 
