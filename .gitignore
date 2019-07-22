@@ -1,6 +1,7 @@
 
 *.pdb
 *.dll.config
+*.Designer.cs
 CurveTool/.vs
 CurveTool/VirtualChannel/bin
 CurveTool/VirtualChannel/obj
