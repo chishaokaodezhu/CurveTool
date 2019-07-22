@@ -4,6 +4,7 @@ using PluginPort;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static CurveMonitor.src.UI.PortPannel;
@@ -43,14 +44,14 @@ namespace CurveMonitor.src.Session
 
         }
 
-        private DataProvider mDataProvider;
+        private DataProvider mDataProvider = null;
         public DataProvider dataProvider
         {
             get { return mDataProvider; }
             set { mDataProvider = value; }
         }
 
-        private PortPannel mPortPannel;
+        private PortPannel mPortPannel = null;
         public PortPannel portPannel
         {
             set
@@ -60,20 +61,30 @@ namespace CurveMonitor.src.Session
             }
         }
 
-        private DataPump.DataPump mDataPump;
+        private DataPump.DataPump mDataPump = null;
         public DataPump.DataPump dataPump
         {
             get { return mDataPump; }
             set { mDataPump = value; }
         }
 
-        private CurveWindow mCurveWindow;
+        private CurveWindow mCurveWindow = null;
         public CurveWindow curveWindow
         {
             get { return mCurveWindow; }
             set { mCurveWindow = value; }
         }
 
+        private CodeEditor mCodeEditor = null;
+        public CodeEditor codeEditor
+        {
+            get { return mCodeEditor; }
+            set
+            {
+                mCodeEditor = value;
+                mCodeEditor.BindOpHandler(this);
+            }
+        }
 
         public void OpenDataPort()
         {
@@ -101,6 +112,16 @@ namespace CurveMonitor.src.Session
         }
 
         public void UpdateStoreFile(string file_name)
+        {
+
+        }
+
+        public void AddVirtualChannel(string name, Assembly assembly)
+        {
+
+        }
+
+        public void RemoveVirutalChannel(string name)
         {
 
         }

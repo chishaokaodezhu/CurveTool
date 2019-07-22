@@ -4,24 +4,23 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A811FF58-DE4F-4A32-8074-2D61785946FC}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>CurveMonitor</RootNamespace>
-    <AssemblyName>CurveMonitor</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <ProjectGuid>{7340DD26-08B8-41F4-AE37-66FA6643BFDB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VirtualChannel</RootNamespace>
+    <AssemblyName>VirtualChannel</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\lib\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,13 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PluginPort">
-      <HintPath>..\lib\PluginPort.dll</HintPath>
-    </Reference>
-    <Reference Include="SerialPortPlugin">
-      <HintPath>..\plugin\SerialPortPlugin.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -53,57 +49,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="VirtualChannel">
-      <HintPath>..\lib\VirtualChannel.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="src\DataPump\BinDataDeliver.cs" />
-    <Compile Include="src\DataPump\DataPump.cs" />
-    <Compile Include="src\DataPump\FormulaComplier.cs" />
-    <Compile Include="src\Graph\CurveView.cs" />
-    <Compile Include="src\Graph\CurveWindow.xaml.cs">
-      <DependentUpon>CurveWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="src\Plugin\PluginLoader.cs" />
-    <Compile Include="src\Session\Session.cs" />
-    <Compile Include="src\UI\CodeEditor.xaml.cs">
-      <DependentUpon>CodeEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="src\UI\PortPannel.xaml.cs">
-      <DependentUpon>PortPannel.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="src\Graph\CurveWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="src\UI\CodeEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="src\UI\PortPannel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -119,6 +67,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="VirtualChannel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -131,34 +80,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Resource Include="src\说明.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\port_close.png" />
-    <Resource Include="src\UI\icons\port_open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\file.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\start.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\channel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\channel1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="src\UI\icons\curve.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>XCOPY $(SolutionDir)plugin $(ProjectDir)$(OutDir)plugin\ /Y</PostBuildEvent>
-  </PropertyGroup>
 </Project>

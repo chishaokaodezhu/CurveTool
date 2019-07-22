@@ -1,0 +1,16 @@
+﻿<Window x:Class="CurveMonitor.src.UI.CodeEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurveMonitor.src.UI"
+        mc:Ignorable="d"
+        Title="Virtual Channel Editor" Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="fileList" HorizontalAlignment="Left" Width="100" BorderBrush="#FFA2A2A2" BorderThickness="0,0,4,0"/>
+        <TextBox x:Name="fileName" HorizontalAlignment="Left" Height="24" Margin="104,3,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="320" UndoLimit="103" FontSize="16" BorderThickness="0"/>
+        <Button x:Name="buildBtn" Content="预编译" HorizontalAlignment="Right" Height="24" Margin="0,2,96,0" VerticalAlignment="Top" Width="80" FontSize="14" IsEnabled="False"/>
+        <Button x:Name="addBtn" Content="添加" HorizontalAlignment="Right" Height="24" Margin="0,2,8,0" VerticalAlignment="Top" Width="80" FontSize="14" IsEnabled="False"/>
+        <TextBox x:Name="codeTextBox" Margin="100,30,0,0"></TextBox>
+    </Grid>
+</Window>

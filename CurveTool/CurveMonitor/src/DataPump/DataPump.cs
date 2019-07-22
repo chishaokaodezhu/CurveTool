@@ -60,7 +60,12 @@ namespace CurveMonitor.src.DataPump
          * 译然后作为MethodInfo传入，使用MethodInfo等级的反射性能基本够用（只要用户自定义
          * 的代码公式运行起来不要太耗时）。
          */
-        public void AppendVirtualChannel(MethodInfo vChannel)
+        public void AppendVirtualChannel(string name, VirtualChannel.VirtualChannel vChannel)
+        {
+
+        }
+
+        public void RemoveVirtualChannel(string name)
         {
 
         }
