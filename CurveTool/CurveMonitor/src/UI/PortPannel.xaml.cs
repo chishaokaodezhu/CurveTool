@@ -21,21 +21,9 @@ namespace CurveMonitor.src.UI
     /// </summary>
     public partial class PortPannel : UserControl
     {
-        public enum OpType
+        private Session.Session handler = null;
+        public void BindOpHandler(Session.Session h)
         {
-            PORT_OPEN, PORT_CLOSE,
-            STORE_EN, STORE_DISABLE,
-            SHOW_EN, SHOW_DISABLE,
-            FILE_SELECTED,
-            W_SHOW,
-            W_CLOSE
-        }
-
-        private Object obj = null;
-        private PortUIOp handler = null;
-        public void BindOpHandler(Object oj, PortUIOp h)
-        {
-            this.obj = oj;
             this.handler = h;
         }
 
@@ -66,18 +54,28 @@ namespace CurveMonitor.src.UI
 
             if (!this.isPortOpen)
             {
-                if (this.handler.UIOp(obj, OpType.PORT_OPEN))
+                try
                 {
+                    this.handler.OpenDataPort();
                     this.isPortOpen = true;
                     this.portSwitch.Source = openImg;
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
                 }
             }
             else
             {
-                if (this.handler.UIOp(obj, OpType.PORT_CLOSE))
+                try
                 {
+                    this.handler.CloseDataPort();
                     this.isPortOpen = false;
                     this.portSwitch.Source = closeImg;
+                }
+                catch(Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
                 }
             }
         }
@@ -91,23 +89,24 @@ namespace CurveMonitor.src.UI
                 return;
             }
 
-            if (!this.isStoreEn)
+            try
             {
-                if (this.handler.UIOp(obj, OpType.STORE_EN))
+                this.handler.StoreDataFlowCtrl(!this.isStoreEn);
+                this.isStoreEn = !this.isStoreEn;
+                if (this.isStoreEn)
                 {
-                    this.isStoreEn = true;
                     this.storeLine.Stroke = Brushes.DarkGoldenrod;
                     this.storeSwitch.Source = stopImg;
                 }
-            }
-            else
-            {
-                if (this.handler.UIOp(obj, OpType.STORE_DISABLE))
+                else
                 {
-                    this.isStoreEn = false;
                     this.storeLine.Stroke = Brushes.Gray;
                     this.storeSwitch.Source = startImg;
                 }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
             }
         }
 
@@ -117,24 +116,24 @@ namespace CurveMonitor.src.UI
             {
                 return;
             }
-
-            if (!this.isDrawEn)
+            try
             {
-                if (this.handler.UIOp(obj, OpType.SHOW_EN))
+                this.handler.ShowDataFlowCtrl(!this.isDrawEn);
+                this.isDrawEn = !this.isDrawEn;
+                if (this.isDrawEn)
                 {
-                    this.isDrawEn = true;
                     this.showLine.Stroke = Brushes.DarkGoldenrod;
                     this.showSwitch.Source = stopImg;
                 }
-            }
-            else
-            {
-                if (this.handler.UIOp(obj, OpType.SHOW_DISABLE))
+                else
                 {
-                    this.isDrawEn = false;
                     this.showLine.Stroke = Brushes.Gray;
                     this.showSwitch.Source = startImg;
                 }
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message);
             }
         }
 
@@ -152,7 +151,7 @@ namespace CurveMonitor.src.UI
                 this.fileName = sfd.FileName;
                 if(this.handler != null)
                 {
-                    this.handler.UIOp(obj, OpType.FILE_SELECTED);
+                    this.handler.UpdateStoreFile(this.fileName);
                 }
             }
         }
@@ -164,16 +163,8 @@ namespace CurveMonitor.src.UI
                 return;
             }
 
-            if (!this.isWinShow)
-            {
-                this.isWinShow = true;
-                this.handler.UIOp(obj, OpType.W_SHOW);
-            }
-            else
-            {
-                this.isWinShow = false;
-                this.handler.UIOp(obj, OpType.W_CLOSE);
-            }
+            this.handler.CurveWindowCtrl(!this.isWinShow);
+            this.isWinShow = !this.isWinShow;
         }
     }
 }

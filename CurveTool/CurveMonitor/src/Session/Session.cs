@@ -10,7 +10,7 @@ using static CurveMonitor.src.UI.PortPannel;
 
 namespace CurveMonitor.src.Session
 {
-    class Session : PortUIOp
+    public class Session
     {
         private static List<Session> sessionList = new List<Session>();
 
@@ -56,7 +56,7 @@ namespace CurveMonitor.src.Session
             set
             {
                 mPortPannel = value;
-                mPortPannel.BindOpHandler(this, this);
+                mPortPannel.BindOpHandler(this);
             }
         }
 
@@ -74,12 +74,35 @@ namespace CurveMonitor.src.Session
             set { mCurveWindow = value; }
         }
 
-        /*
-         * 在这里完成所有的对某个端口的所有用户交互
-         */
-        public bool UIOp(Object obj, OpType type)
+
+        public void OpenDataPort()
         {
-            return true;
+            
+        }
+
+        public void CloseDataPort()
+        {
+            
+        }
+
+        public void StoreDataFlowCtrl(bool en)
+        {
+            
+        }
+
+        public void ShowDataFlowCtrl(bool en)
+        {
+
+        }
+
+        public void CurveWindowCtrl(bool show)
+        {
+
+        }
+
+        public void UpdateStoreFile(string file_name)
+        {
+
         }
     }
 }
