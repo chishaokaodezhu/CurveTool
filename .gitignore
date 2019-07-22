@@ -1,4 +1,9 @@
 
+*.pdb
+*.dll.config
+CurveTool/.vs
+CurveTool/VirtualChannel/bin
+CurveTool/VirtualChannel/obj
 CurveTool/CurveMonitor/bin
 CurveTool/CurveMonitor/obj
 CurveTool/PluginPort/bin
