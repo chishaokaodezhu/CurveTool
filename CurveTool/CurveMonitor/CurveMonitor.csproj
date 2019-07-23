@@ -159,6 +159,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY $(SolutionDir)plugin $(ProjectDir)$(OutDir)plugin\ /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY $(SolutionDir)plugin $(ProjectDir)$(OutDir)plugin\ /Y
+XCOPY $(SolutionDir)lib $(ProjectDir)$(OutDir)lib\ /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
