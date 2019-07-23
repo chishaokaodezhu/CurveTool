@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurveMonitor", "CurveMonitor\CurveMonitor.csproj", "{A811FF58-DE4F-4A32-8074-2D61785946FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7AB6B001-2CCD-4490-9605-8D09066C8EB2} = {7AB6B001-2CCD-4490-9605-8D09066C8EB2}
+		{7340DD26-08B8-41F4-AE37-66FA6643BFDB} = {7340DD26-08B8-41F4-AE37-66FA6643BFDB}
+		{AA30AD4D-EBE5-45F1-808B-A1C28A1DA3DB} = {AA30AD4D-EBE5-45F1-808B-A1C28A1DA3DB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialPortPlugin", "SerialPortPlugin\SerialPortPlugin.csproj", "{AA30AD4D-EBE5-45F1-808B-A1C28A1DA3DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7AB6B001-2CCD-4490-9605-8D09066C8EB2} = {7AB6B001-2CCD-4490-9605-8D09066C8EB2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginPort", "PluginPort\PluginPort.csproj", "{7AB6B001-2CCD-4490-9605-8D09066C8EB2}"
 EndProject
