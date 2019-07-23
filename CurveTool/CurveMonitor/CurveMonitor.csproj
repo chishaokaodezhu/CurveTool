@@ -67,7 +67,6 @@
     </ApplicationDefinition>
     <Compile Include="src\DataPump\BinDataDeliver.cs" />
     <Compile Include="src\DataPump\DataPump.cs" />
-    <Compile Include="src\DataPump\FormulaComplier.cs" />
     <Compile Include="src\Graph\CurveView.cs" />
     <Compile Include="src\Graph\CurveWindow.xaml.cs">
       <DependentUpon>CurveWindow.xaml</DependentUpon>
