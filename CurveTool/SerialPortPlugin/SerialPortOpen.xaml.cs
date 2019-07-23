@@ -45,6 +45,7 @@ namespace SerialPortPlugin
             else
             {
                 this.portList.Text = "None";
+                this.setBtn.IsEnabled = false;
             }
         }
 

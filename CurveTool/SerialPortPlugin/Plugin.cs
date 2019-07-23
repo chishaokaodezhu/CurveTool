@@ -14,6 +14,8 @@ namespace SerialPortPlugin
     public class Plugin : DataProvider
     {
         private string error = null;
+        private String portName = null;
+        private int baudRate = 0;
         private SerialPort serialPort = null;
 
         public string PluginName()
@@ -32,12 +34,13 @@ namespace SerialPortPlugin
                 return -1;
             }
 
-            serialPort = new SerialPort(w.selectedPort, w.baudRate);
+            //serialPort = new SerialPort(w.selectedPort, w.baudRate);
             return 0;
         }
 
         public void Start()
         {
+            serialPort = new SerialPort(this.portName, this.baudRate);
             serialPort.Open();
         }
 
