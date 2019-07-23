@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurveMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="610" Background="{x:Null}" MinWidth="610" MaxWidth="610">
+        Title="MainWindow" Height="800" Width="610" Background="{x:Null}" MinWidth="610" MaxWidth="610" Closing="Window_Closing">
     <Grid>
         <ListBox x:Name="pannelList" Margin="0,36,0,0"></ListBox>
         <Menu Height="36" VerticalAlignment="Top">

@@ -33,7 +33,8 @@ namespace SerialPortPlugin
                 error = "no port selected.";
                 return -1;
             }
-
+            this.portName = w.selectedPort;
+            this.baudRate = w.baudRate;
             //serialPort = new SerialPort(w.selectedPort, w.baudRate);
             return 0;
         }
@@ -58,7 +59,10 @@ namespace SerialPortPlugin
 
         public void Close()
         {
-            serialPort.Close();
+            if(serialPort != null)
+            {
+                serialPort.Close();
+            }
         }
 
         public string LastError()

@@ -34,6 +34,19 @@ namespace CurveMonitor.src.DataPump
             dataProvider = dp;
             storeDeliver = store;
             chartDeliver = chart;
+
+            StartWorkThread();
+        }
+
+        public DataPump()
+        {
+            StartWorkThread();
+        }
+
+        private void StartWorkThread()
+        {
+            Thread th = new Thread(WorkThread);
+            th.Start();
         }
 
         public void ResetChartDeliver(DataDeliver chart)
@@ -73,12 +86,19 @@ namespace CurveMonitor.src.DataPump
         {
             isWork = false;
             isRead = false;
-            sem.Release();
+            try
+            {
+                sem.Release();
+            }
+            catch(SemaphoreFullException e)
+            {
+                ;
+            }
         }
 
-        private bool storeDataEn = true;
+        private bool storeDataEn = false;
         private bool storeVDataEn = false;
-        private bool chartDataEn = true;
+        private bool chartDataEn = false;
         private bool chartVDataEn = false;
 
         /*普通通道的数据与虚拟通道的数据分发交付是默认关闭的，需要调用如下接口开启或关闭*/
@@ -143,12 +163,42 @@ namespace CurveMonitor.src.DataPump
                         double[] data = dataProvider.LoadData();
                         if(storeDeliver != null)
                         {
-                            storeDeliver.Delive(data);
+                            if (this.storeDataEn && this.storeVDataEn)
+                            {
+                                
+                            }
+                            else if (this.storeDataEn)
+                            {
+                                storeDeliver.Delive(data);
+                            }
+                            else if(this.storeVDataEn)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
                         }
 
                         if(chartDeliver != null)
                         {
-                            chartDeliver.Delive(data);
+                            if(this.chartDataEn && this.chartVDataEn)
+                            {
+                                chartDeliver.Delive(data);
+                            }
+                            else if (this.chartDataEn)
+                            {
+                                chartDeliver.Delive(data);
+                            }
+                            else if (this.chartVDataEn)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
                         }
                     }
                     catch (Exception e)

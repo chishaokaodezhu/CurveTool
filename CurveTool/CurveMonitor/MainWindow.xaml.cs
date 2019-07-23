@@ -19,6 +19,7 @@ using PluginPort;
 using CurveMonitor.src.UI;
 using System.Collections;
 using CurveMonitor.src.Session;
+using CurveMonitor.src.DataPump;
 
 namespace CurveMonitor
 {
@@ -32,21 +33,6 @@ namespace CurveMonitor
         {
             InitializeComponent();
             LoadPluginToMenu();
-
-            /*
-            PluginLoader pl = new PluginLoader();
-            pl.LoadPlugins();
-            DataProvider dp = pl.NewPluginInstance("通用串口");
-            string name = dp.PluginName();
-            DataProvider dp1 = pl.NewPluginInstance("通用串口");
-            if (dp.Equals(dp1))
-            {
-                string s = "y";
-            }
-            
-            this.pannelList.Items.Add(new PortPannel());
-            this.pannelList.Items.Add(new PortPannel());
-            */
         }
 
         Hashtable pmHt = new Hashtable();
@@ -73,11 +59,31 @@ namespace CurveMonitor
             if (dp.Open() >= 0)
             {
                 PortPannel pp = new PortPannel();
-                this.pannelList.Items.Add(pp);
+                DataPump dataPump = new DataPump();
+                CurveWindow cw = new CurveWindow();
+                CodeEditor ce = new CodeEditor();
                 Session session = new Session();
                 session.dataProvider = dp;
                 session.portPannel = pp;
+                session.dataPump = dataPump;
+                session.curveWindow = cw;
+                session.codeEditor = ce;
+
+                this.pannelList.Items.Add(pp);
+                /*
+                double[] data = new double[2] { 23, 45 };
+                for(int i = 0; i < 1600; i++)
+                {
+                    cw.DeliverData(data);
+                }
+                */
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Session.CloseAllSession();
+            var windows = Application.Current.Windows;
         }
     }
 }

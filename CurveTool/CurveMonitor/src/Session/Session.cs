@@ -61,7 +61,25 @@ namespace CurveMonitor.src.Session
         /* 在这里关闭文件、线程、窗口、端口等操作 */
         public void Close()
         {
+            if(this.mCodeEditor != null)
+            {
+                this.mCodeEditor.CloseWindow();
+            }
 
+            if(this.mCurveWindow != null)
+            {
+                this.mCurveWindow.CloseWindow();
+            }
+
+            if(this.mDataPump != null)
+            {
+                this.mDataPump.Close();
+            }
+
+            if (this.mDataProvider != null)
+            {
+                this.mDataProvider.Close();
+            }
         }
 
         private DataProvider mDataProvider = null;
@@ -158,13 +176,14 @@ namespace CurveMonitor.src.Session
 
         public void CurveWindowCtrl(bool show)
         {
-            if (show)
+            if (mCurveWindow.IsVisible)
             {
-                mCurveWindow.Show();
+                mCurveWindow.Hide();
             }
             else
             {
-                mCurveWindow.Hide();
+                mCurveWindow.Show();
+                //mCurveWindow.Topmost = true;
             }
         }
 
@@ -175,8 +194,14 @@ namespace CurveMonitor.src.Session
 
         public void OpenCodeEditor()
         {
-            CodeEditor ce = new CodeEditor();
-            ce.ShowDialog();
+            if (mCodeEditor.IsVisible)
+            {
+                mCodeEditor.Hide();
+            }
+            else
+            {
+                mCodeEditor.ShowDialog();
+            }
         }
 
         /* 

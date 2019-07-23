@@ -180,7 +180,22 @@ namespace CurveMonitor.src.Graph
 
             }
 
-            float realSysYScal = systemYScale != 0.0f ? systemYScale : (float)(this.ActualHeight / (maxYValue - minYValue) * 0.8);
+            float maxAbsYValue = (float)Math.Max(Math.Abs(maxYValue), Math.Abs(minYValue));
+            float realSysYScal = 0;
+            //float realSysYScal = systemYScale != 0.0f ? systemYScale : (float)(this.ActualHeight / maxAbsYValue * 0.8);
+            if(systemYScale != 0.0f)
+            {
+                realSysYScal = systemYScale;
+            }
+            else if (maxAbsYValue * 2.2 > this.ActualHeight)
+            {
+                realSysYScal = (float)(this.ActualHeight / 2 / maxAbsYValue / 0.8);
+            }
+            else
+            {
+                realSysYScal = 1.0f;
+            }
+
             float realXStep = (float)this.ActualWidth / this.maxVisablePointNums;
             float realSysYOffset = (float)this.ActualHeight / 2;
 

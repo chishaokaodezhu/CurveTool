@@ -116,6 +116,7 @@ namespace CurveMonitor.src.UI
             {
                 return;
             }
+
             try
             {
                 this.handler.ShowDataFlowCtrl(!this.isDrawEn);

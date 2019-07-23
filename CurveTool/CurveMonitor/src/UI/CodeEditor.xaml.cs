@@ -248,5 +248,21 @@ namespace CurveMonitor.src.UI
                     break;
             }
         }
+
+        private bool close = false;
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!close)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+        }
+
+        public void CloseWindow()
+        {
+            close = true;
+            this.Close();
+        }
     }
 }

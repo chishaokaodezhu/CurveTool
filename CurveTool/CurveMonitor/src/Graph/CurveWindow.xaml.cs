@@ -39,19 +39,21 @@ namespace CurveMonitor.src.Graph
 
         private Hashtable curveCtrlBlocks = new Hashtable();
         private Rectangle[] cbts = null;
-        private Color[] defColors = {
-            Color.FromRgb(0,0,0),       Color.FromRgb(255, 192, 203),
-            Color.FromRgb(220,20,60),   Color.FromRgb(219,112,147),
-            Color.FromRgb(255,105,180), Color.FromRgb(255,20,147),
-            Color.FromRgb(199,21,133),  Color.FromRgb(218,112,214),
-            Color.FromRgb(238,130,238), Color.FromRgb(255,0,255),
-            Color.FromRgb(139,0,139),   Color.FromRgb(75,0,130),
-            Color.FromRgb(119,136,153), Color.FromRgb(30,144,255),
-            Color.FromRgb(135,206,235), Color.FromRgb(47,79,79),
-        };
+        private Color[] defColors = null;
 
         private void BindCbts()
         {
+            defColors = new Color[CurveView.MAX_CURVE_NUMS]{
+                Color.FromRgb(0,0,0),       Color.FromRgb(255, 192, 203),
+                Color.FromRgb(220,20,60),   Color.FromRgb(219,112,147),
+                Color.FromRgb(255,105,180), Color.FromRgb(255,20,147),
+                Color.FromRgb(199,21,133),  Color.FromRgb(218,112,214),
+                Color.FromRgb(238,130,238), Color.FromRgb(255,0,255),
+                Color.FromRgb(139,0,139),   Color.FromRgb(75,0,130),
+                Color.FromRgb(119,136,153), Color.FromRgb(30,144,255),
+                Color.FromRgb(135,206,235), Color.FromRgb(47,79,79),
+            };
+
             cbts = new Rectangle[CurveView.MAX_CURVE_NUMS];
 
             cbts[0] = this.cbt1;
@@ -105,11 +107,17 @@ namespace CurveMonitor.src.Graph
                 lastCurveNums = data.Length;
                 for(int lineIdx = 0; lineIdx < data.Length; lineIdx++)
                 {
+                    int idx = lineIdx;
                     this.curveView.SetCurveColor(lineIdx, defColors[lineIdx]);
                     Color color = ((CurveCtrlBlock)curveCtrlBlocks[cbts[lineIdx]]).color;
-                    this.cbts[lineIdx].Fill = new SolidColorBrush(color);
+                    //this.cbts[lineIdx].Fill = new SolidColorBrush(color);
+                    this.Dispatcher.BeginInvoke(new Action(()=> {
+                        this.cbts[idx].Fill = new SolidColorBrush(color);
+                    }));
                 }
             }
+
+            CurveUpdate();
         }
 
         /*
@@ -184,6 +192,22 @@ namespace CurveMonitor.src.Graph
             this.curveView.SetCurveScale(ccb.curveIdx, y_scale, x_scale);
             this.curveView.SetCurveOffset(ccb.curveIdx, y_offset, 0);
             CurveUpdate();
+        }
+
+        private bool close = false;
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!close)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+        }
+
+        public void CloseWindow()
+        {
+            close = true;
+            this.Close();
         }
     }
 }

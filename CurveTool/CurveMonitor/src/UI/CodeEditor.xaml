@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurveMonitor.src.UI"
         mc:Ignorable="d"
-        Title="Virtual Channel Editor" Height="450" Width="800">
+        Title="Virtual Channel Editor" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <ListBox x:Name="fileList" HorizontalAlignment="Left" Width="100" BorderBrush="#CCACACAC" Padding="0" ScrollViewer.CanContentScroll="False" Margin="0,30,0,0" SelectionChanged="ChannelChanged"/>
         <TextBox x:Name="fileName" HorizontalAlignment="Left" Height="24" Margin="104,3,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="320" UndoLimit="103" FontSize="16" BorderThickness="0"/>
