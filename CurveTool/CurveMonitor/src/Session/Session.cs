@@ -122,12 +122,9 @@ namespace CurveMonitor.src.Session
             ce.ShowDialog();
         }
 
-        public void AddVirtualChannel(string name, Assembly assembly)
-        {
-
-        }
-
-        public void RemoveVirutalChannel(string name)
+        /* 
+         * 不存在名为name的通道时意味着新增，存在则意味着替换，assembly为null则意味着删除 */
+        public void SetVirtualChannel(string name, Assembly assembly)
         {
 
         }
