@@ -36,7 +36,7 @@ namespace CurveMonitor.src.UI
             "    }\r\n" +
             "}\r\n";
 
-        private class VirtualChannel
+        private class VirtualChannelInfo
         {
             //用于对一个通道进行唯一标识，保证通道名修改后也能找到对应通道
             public string channelKey = null;
@@ -47,6 +47,7 @@ namespace CurveMonitor.src.UI
             public string lastUsableCode = null;
             public string presentCode = startCode;
             public Assembly lastUsableAssembly = null;
+            public VirtualChannel.VirtualChannel vc = null;
             public TextBlock tb = null;
 
             public string Build()
@@ -61,8 +62,8 @@ namespace CurveMonitor.src.UI
         }
 
         /*最多允许16个元素*/
-        private List<VirtualChannel> virtualChannels = new List<VirtualChannel>();
-        private VirtualChannel presentChannel = null;
+        private List<VirtualChannelInfo> virtualChannels = new List<VirtualChannelInfo>();
+        private VirtualChannelInfo presentChannel = null;
         private Session.Session session = null;
 
         public CodeEditor()
@@ -89,7 +90,7 @@ namespace CurveMonitor.src.UI
             TextBlock tb = new TextBlock();
             tb.Text = "NewChannel";
 
-            VirtualChannel nvc = new VirtualChannel();
+            VirtualChannelInfo nvc = new VirtualChannelInfo();
             nvc.channelName = "NewChannel";
             nvc.channelKey = System.Guid.NewGuid().ToString();
             nvc.tb = tb;
@@ -113,7 +114,7 @@ namespace CurveMonitor.src.UI
             {
                 if(virtualChannels[i].channelName.CompareTo(sTb.Text) == 0)
                 {
-                    VirtualChannel cv = virtualChannels[i];
+                    VirtualChannelInfo cv = virtualChannels[i];
                     this.presentChannel = cv;
                     this.codeTextBox.Text = cv.presentCode;
                     if (cv.presentCode.CompareTo(cv.lastUsableCode) == 0)
@@ -181,6 +182,21 @@ namespace CurveMonitor.src.UI
 
             presentChannel.lastUsableCode = presentChannel.presentCode;
             presentChannel.lastUsableAssembly = cr.CompiledAssembly;
+            Object api = null;
+            foreach(Type t in presentChannel.lastUsableAssembly.GetExportedTypes())
+            {
+                if(t.GetInterface("VirtualChannel") != null)
+                {
+                    presentChannel.vc = (VirtualChannel.VirtualChannel)Activator.CreateInstance(t);
+                    api = presentChannel.vc;
+                }
+            }
+
+            if(api == null)
+            {
+                MessageBox.Show("代码中的类并非继承自VirtualChannel接口");
+                return false;
+            }
 
             return true;
         }
@@ -199,7 +215,7 @@ namespace CurveMonitor.src.UI
                     //启用或更新端口
                     if(this.session != null)
                     {
-                        this.session.SetVirtualChannel(presentChannel.channelKey, presentChannel.lastUsableAssembly);
+                        this.session.SetVirtualChannel(presentChannel.channelKey, presentChannel.vc);
                     }
                     break;
 

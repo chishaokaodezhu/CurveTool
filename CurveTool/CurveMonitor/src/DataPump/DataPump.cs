@@ -6,10 +6,12 @@
 using CurveMonitor.src.Plugin;
 using PluginPort;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VirtualChannel;
 
@@ -19,6 +21,9 @@ namespace CurveMonitor.src.DataPump
 
     public class DataPump
     {
+        private DataProvider dataProvider = null;
+        private DataDeliver storeDeliver = null;
+        private DataDeliver chartDeliver = null;
         /*
          * dp       作为数据提供提供方
          * sotre    提供数据存储服务，对应模块需要实现DataDeliver接口
@@ -26,35 +31,73 @@ namespace CurveMonitor.src.DataPump
          */
         public DataPump(DataProvider dp, DataDeliver store, DataDeliver chart)
         {
-
+            dataProvider = dp;
+            storeDeliver = store;
+            chartDeliver = chart;
         }
 
+        public void ResetChartDeliver(DataDeliver chart)
+        {
+            chartDeliver = chart;
+        }
+
+        public void ResetDataProvider(DataProvider dp)
+        {
+            dataProvider = dp;
+        }
+
+        public void ResetStoreDeliver(DataDeliver store)
+        {
+            storeDeliver = store;
+        }
+
+        private bool isRead = false;
+        private Semaphore sem = new Semaphore(0, 1);
         /*
          * 创建并开启工作线程，工作线程开启后将会持续进行数据提取，分发的工作；直到
          * Stop被调用。
          */
         public void Start()
         {
-
+            isRead = true;
+            sem.Release();
         }
 
         public void Stop()
         {
-
+            isRead = false;
         }
+
+        private bool isWork = true;
+        public void Close()
+        {
+            isWork = false;
+            isRead = false;
+            sem.Release();
+        }
+
+        private bool storeDataEn = true;
+        private bool storeVDataEn = false;
+        private bool chartDataEn = true;
+        private bool chartVDataEn = false;
 
         /*普通通道的数据与虚拟通道的数据分发交付是默认关闭的，需要调用如下接口开启或关闭*/
         public void StoreChannelCtrl(bool dataEn, bool vDatalEn)
         {
-
+            storeDataEn = dataEn;
+            storeVDataEn = vDatalEn;
         }
 
         /*普通通道的数据与虚拟通道的数据分发交付是默认关闭的，需要调用如下接口开启或关闭*/
         public void ChartChannelCtrl(bool dataEn, bool vDataEn)
         {
-
+            chartDataEn = dataEn;
+            chartVDataEn = vDataEn;
         }
 
+        private const int MAX_VIRTUAL_CHANNELS = 16;
+        private VirtualChannel.VirtualChannel[] vcs = null;
+        private Hashtable vcsMap = new Hashtable();
         /*
          * vChannel为虚拟通道数据点的计算函数，它的输入参数为采集到的一帧数据，输出为根据
          * 该帧数据计算出来的新的数据点。计算公式由用户自定义编码完成，编码完成后将会自动编
@@ -63,12 +106,57 @@ namespace CurveMonitor.src.DataPump
          */
         public void SetVirtualChannel(string name, VirtualChannel.VirtualChannel vChannel)
         {
-
+            if (!vcsMap.ContainsKey(name))
+            {
+                for (int i = 0; i < MAX_VIRTUAL_CHANNELS; i++)
+                {
+                    if (vcs[i] == null)
+                    {
+                        vcs[i] = vChannel;
+                        vcsMap.Add(name, i);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                int idx = (int)vcsMap[name];
+                vcs[idx] = vChannel;
+            }
         }
 
         private void WorkThread()
         {
+            vcs = new VirtualChannel.VirtualChannel[MAX_VIRTUAL_CHANNELS];
+            for(int i = 0; i < MAX_VIRTUAL_CHANNELS; i++)
+            {
+                vcs[i] = null;
+            }
 
+            while (isWork)
+            {
+                sem.WaitOne();
+                while (isRead)
+                {
+                    try
+                    {
+                        double[] data = dataProvider.LoadData();
+                        if(storeDeliver != null)
+                        {
+                            storeDeliver.Delive(data);
+                        }
+
+                        if(chartDeliver != null)
+                        {
+                            chartDeliver.Delive(data);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }

@@ -8,6 +8,6 @@ namespace CurveMonitor.src.DataPump
 {
     public interface BinDataDeliver
     {
-        int BinDataDeliver(float[] data);
+        int Delive(double[] data);
     }
 }

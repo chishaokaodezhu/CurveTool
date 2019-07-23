@@ -1,4 +1,5 @@
-﻿using CurveMonitor.src.Graph;
+﻿using CurveMonitor.src.DataPump;
+using CurveMonitor.src.Graph;
 using CurveMonitor.src.UI;
 using PluginPort;
 using System;
@@ -13,6 +14,25 @@ namespace CurveMonitor.src.Session
 {
     public class Session
     {
+        private class WinDataDeliver : BinDataDeliver
+        {
+            private CurveWindow cw = null;
+            public WinDataDeliver(CurveWindow c)
+            {
+                this.cw = c;
+            }
+
+            public int Delive(double[] data)
+            {
+                if(cw != null)
+                {
+                    cw.DeliverData(data);
+                }
+
+                return data.Length;
+            }
+        }
+
         private static List<Session> sessionList = new List<Session>();
 
         public static Session[] SessionList
@@ -48,7 +68,14 @@ namespace CurveMonitor.src.Session
         public DataProvider dataProvider
         {
             get { return mDataProvider; }
-            set { mDataProvider = value; }
+            set
+            {
+                mDataProvider = value;
+                if(mDataPump != null)
+                {
+                    mDataPump.ResetDataProvider(mDataProvider);
+                }
+            }
         }
 
         private PortPannel mPortPannel = null;
@@ -65,14 +92,35 @@ namespace CurveMonitor.src.Session
         public DataPump.DataPump dataPump
         {
             get { return mDataPump; }
-            set { mDataPump = value; }
+            set
+            {
+                mDataPump = value;
+                if(mDataProvider != null)
+                {
+                    mDataPump.ResetDataProvider(mDataProvider);
+                }
+
+                if(mWinDataDeliver != null)
+                {
+                    mDataPump.ResetChartDeliver(mWinDataDeliver);
+                }
+            }
         }
 
         private CurveWindow mCurveWindow = null;
+        private WinDataDeliver mWinDataDeliver = null;
         public CurveWindow curveWindow
         {
             get { return mCurveWindow; }
-            set { mCurveWindow = value; }
+            set
+            {
+                mCurveWindow = value;
+                mWinDataDeliver = new WinDataDeliver(mCurveWindow);
+                if(mDataPump != null)
+                {
+                    mDataPump.ResetChartDeliver(mWinDataDeliver);
+                }
+            }
         }
 
         private CodeEditor mCodeEditor = null;
@@ -88,27 +136,36 @@ namespace CurveMonitor.src.Session
 
         public void OpenDataPort()
         {
-            
+            mDataProvider.Start();
+            mDataPump.Start();
         }
 
         public void CloseDataPort()
         {
-            
+            mDataPump.Stop();
+            mDataProvider.Close();
         }
 
         public void StoreDataFlowCtrl(bool en)
         {
-            
+            mDataPump.StoreChannelCtrl(en, false);
         }
 
         public void ShowDataFlowCtrl(bool en)
         {
-
+            mDataPump.ChartChannelCtrl(en, en);
         }
 
         public void CurveWindowCtrl(bool show)
         {
-
+            if (show)
+            {
+                mCurveWindow.Show();
+            }
+            else
+            {
+                mCurveWindow.Hide();
+            }
         }
 
         public void UpdateStoreFile(string file_name)
@@ -124,9 +181,9 @@ namespace CurveMonitor.src.Session
 
         /* 
          * 不存在名为name的通道时意味着新增，存在则意味着替换，assembly为null则意味着删除 */
-        public void SetVirtualChannel(string name, Assembly assembly)
+        public void SetVirtualChannel(string name, VirtualChannel.VirtualChannel vc)
         {
-
+            this.mDataPump.SetVirtualChannel(name, vc);
         }
     }
 }
