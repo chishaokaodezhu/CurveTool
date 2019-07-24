@@ -142,6 +142,10 @@ namespace CurveMonitor.src.DataPump
             {
                 int idx = (int)vcsMap[name];
                 vcs[idx] = vChannel;
+                if(vChannel == null)
+                {
+                    vcsMap.Remove(name);
+                }
             }
         }
 
