@@ -232,13 +232,16 @@ namespace CurveMonitor.src.Graph
                 int pointIdx = this.curvesDataStrartIdx[curveIdx];
                 double[] points = (double[])this.curvesData[curveIdx];
                 float yScale = this.curvesYScale[curveIdx];
-                double yOffset = this.curvesYOffset[curveIdx] + realSysYOffset;
-                double lastPy = points[pointIdx] * yScale * realSysYScal + yOffset;
+                //double yOffset = this.curvesYOffset[curveIdx] + realSysYOffset;
+                double yOffset = realSysYOffset - this.curvesYOffset[curveIdx];
+                //double lastPy = points[pointIdx] * yScale * realSysYScal + yOffset;
+                double lastPy = yOffset - points[pointIdx] * yScale * realSysYScal;
 
                 for (int loopTimes = 0; loopTimes < this.curvesDataNums[curveIdx]; loopTimes++)
                 {
                     double px = lastPx + realXStep;
-                    double py = points[pointIdx] * yScale* realSysYScal + yOffset;
+                    //double py = points[pointIdx] * yScale* realSysYScal + yOffset;
+                    double py = yOffset - points[pointIdx] * yScale * realSysYScal;
                     pointIdx++;
                     pointIdx %= this.maxCurvesDataNums;
 

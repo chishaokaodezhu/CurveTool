@@ -32,6 +32,7 @@ namespace CurveMonitor.src.UI
             "        public double GetChannelValue(double[] input)\r\n" +
             "        {\r\n" +
             "            //add code here\r\n" +
+            "            return 0;\r\n" +
             "        }\r\n" +
             "    }\r\n" +
             "}\r\n";
@@ -263,6 +264,34 @@ namespace CurveMonitor.src.UI
         {
             close = true;
             this.Close();
+        }
+
+        private void BuildBtn_Click(object sender, RoutedEventArgs e)
+        {
+            presentChannel.presentCode = this.codeTextBox.Text;
+
+            /*编译代码*/
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            CompilerParameters compilerParameters = new CompilerParameters();
+            compilerParameters.ReferencedAssemblies.Add("System.dll");
+            compilerParameters.ReferencedAssemblies.Add("lib/VirtualChannel.dll");
+            compilerParameters.GenerateExecutable = false;
+            compilerParameters.GenerateInMemory = true;
+
+            CompilerResults cr = codeProvider.CompileAssemblyFromSource(compilerParameters, presentChannel.presentCode);
+            if (cr.Errors.HasErrors)
+            {
+                string errInfo = "编译时发生错误：\r\n";
+                foreach (CompilerError err in cr.Errors)
+                {
+                    errInfo += ("line " + err.Line + ": " + err.ErrorText + "\r\n");
+                }
+                MessageBox.Show(errInfo);
+            }
+            else
+            {
+                MessageBox.Show("编译通过");
+            }
         }
     }
 }

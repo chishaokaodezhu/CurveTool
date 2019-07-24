@@ -161,11 +161,35 @@ namespace CurveMonitor.src.DataPump
                     try
                     {
                         double[] data = dataProvider.LoadData();
+                        double[] vData = new double[vcsMap.Count];
+
+                        int vIdx = 0;
+                        for(int i = 0; i < MAX_VIRTUAL_CHANNELS; i++)
+                        {
+                            if(vcs[i] != null)
+                            {
+                                vData[vIdx++] = vcs[i].GetChannelValue(data);
+                            }
+                        }
+
+                        double[] finalData = new double[data.Length + vData.Length];
+                        vIdx = 0;
+                        for(int i = 0; i < data.Length; i++)
+                        {
+                            finalData[vIdx++] = data[i]; 
+                        }
+
+                        for(int i = 0; i < vData.Length; i++)
+                        {
+                            finalData[vIdx++] = vData[i];
+                        }
+
+
                         if(storeDeliver != null)
                         {
                             if (this.storeDataEn && this.storeVDataEn)
                             {
-                                
+                                storeDeliver.Delive(finalData);
                             }
                             else if (this.storeDataEn)
                             {
@@ -173,7 +197,7 @@ namespace CurveMonitor.src.DataPump
                             }
                             else if(this.storeVDataEn)
                             {
-
+                                storeDeliver.Delive(vData);
                             }
                             else
                             {
@@ -185,7 +209,7 @@ namespace CurveMonitor.src.DataPump
                         {
                             if(this.chartDataEn && this.chartVDataEn)
                             {
-                                chartDeliver.Delive(data);
+                                chartDeliver.Delive(finalData);
                             }
                             else if (this.chartDataEn)
                             {
@@ -193,7 +217,7 @@ namespace CurveMonitor.src.DataPump
                             }
                             else if (this.chartVDataEn)
                             {
-
+                                chartDeliver.Delive(vData);
                             }
                             else
                             {
