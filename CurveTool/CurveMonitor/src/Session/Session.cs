@@ -1,4 +1,5 @@
 ﻿using CurveMonitor.src.DataPump;
+using CurveMonitor.src.DataStore;
 using CurveMonitor.src.Graph;
 using CurveMonitor.src.UI;
 using PluginPort;
@@ -80,6 +81,12 @@ namespace CurveMonitor.src.Session
             {
                 this.mDataProvider.Close();
             }
+
+            if(this.mDataStore != null)
+            {
+                StoreCtrl sc = (StoreCtrl)mDataStore;
+                sc.Close();
+            }
         }
 
         private DataProvider mDataProvider = null;
@@ -122,6 +129,11 @@ namespace CurveMonitor.src.Session
                 {
                     mDataPump.ResetChartDeliver(mWinDataDeliver);
                 }
+
+                if(mDataStore != null)
+                {
+                    mDataPump.ResetStoreDeliver(mDataStore);
+                }
             }
         }
 
@@ -137,6 +149,20 @@ namespace CurveMonitor.src.Session
                 if(mDataPump != null)
                 {
                     mDataPump.ResetChartDeliver(mWinDataDeliver);
+                }
+            }
+        }
+
+        private BinDataDeliver mDataStore = null;
+        public BinDataDeliver dataStore
+        {
+            get { return mDataStore; }
+            set
+            {
+                mDataStore = value;
+                if(mDataPump != null)
+                {
+                    mDataPump.ResetStoreDeliver(mDataStore);
                 }
             }
         }
@@ -189,7 +215,15 @@ namespace CurveMonitor.src.Session
 
         public void UpdateStoreFile(string file_name)
         {
+            if(mDataStore != null)
+            {
+                StoreCtrl sc = (StoreCtrl)mDataStore;
+                sc.Close();
+            }
 
+            dataStore = new CSVStore(file_name);
+            StoreCtrl sc1 = (StoreCtrl)mDataStore;
+            sc1.Start();
         }
 
         public void OpenCodeEditor()

@@ -145,7 +145,7 @@ namespace CurveMonitor.src.UI
             //设置这个对话框的起始保存路径
             sfd.InitialDirectory = @"D:\";
             //设置保存的文件的类型，注意过滤器的语法
-            sfd.Filter = "CSV|*.cssv|PY|*.py";
+            sfd.Filter = "CSV|*.csv|PY|*.py";
             //调用ShowDialog()方法显示该对话框，该方法的返回值代表用户是否点击了确定按钮
             if (sfd.ShowDialog() == true)
             {
