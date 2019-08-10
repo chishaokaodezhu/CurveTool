@@ -9,6 +9,7 @@
 ![Alt text](img/NGB2X@D8~_9ILM_XF18$3.png)
 ![Alt text](img/_EXNU32@K`1OMAAG_W@6VN.png)
 3. 点击红色矩形框住的图表，打开代码编辑界面，并编辑代码。【预编译】可以检查代码是否可以编译通过，【启用】可以启用或更新代码。
+
 ![Alt text](img/SV[CR2`OQGM3S20~WANWV.png)
 ![Alt text](img/a.png)
 4. 点击下图1号框可以启用数据保存流，2号框可以打开文本对话框，用来确定文件保存位置
